@@ -35,7 +35,9 @@ class RecommendedTrackCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        contentView.backgroundColor = UIColor(white: 0.11, alpha: 0.9)
+        contentView.layer.cornerRadius = 8
+        contentView.layer.masksToBounds = true
         contentView.addSubview(albumCoverImageView)
         contentView.addSubview(trackNameLabel)
         contentView.addSubview(artistNameLabel)

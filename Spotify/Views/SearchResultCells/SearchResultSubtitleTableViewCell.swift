@@ -35,6 +35,7 @@ class SearchResultSubtitleTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.addSubview(subtitleLabel)
         contentView.addSubview(iconImageViewe)
+        
         contentView.clipsToBounds = true
         accessoryType = .disclosureIndicator
     }
@@ -57,15 +58,13 @@ class SearchResultSubtitleTableViewCell: UITableViewCell {
             x: iconImageViewe.right+10,
             y: 0,
             width: contentView.width-iconImageViewe.right-15,
-            height: labelHeight
-        )
+            height: labelHeight)
 
         subtitleLabel.frame = CGRect(
             x: iconImageViewe.right+10,
             y: label.bottom,
             width: contentView.width-iconImageViewe.right-15,
-            height: labelHeight
-        )
+            height: labelHeight)
     }
 
     override func prepareForReuse() {
@@ -78,6 +77,9 @@ class SearchResultSubtitleTableViewCell: UITableViewCell {
     func configure(with viewModel: SearchResultSubtitleTableViewCellViewModel) {
         label.text = viewModel.title
         subtitleLabel.text = viewModel.subtitle
-        iconImageViewe.sd_setImage(with: viewModel.imageURL, placeholderImage: UIImage(systemName: "photo"), completed: nil)
+        iconImageViewe.sd_setImage(
+            with: viewModel.imageURL,
+            placeholderImage: UIImage(systemName: "photo"),
+            completed: nil)
     }
 }

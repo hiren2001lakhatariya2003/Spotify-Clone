@@ -34,7 +34,10 @@ class LibraryPlaylistsViewController: UIViewController {
         fetchData()
 
         if selectionHandler != nil {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .close,
+                target: self,
+                action: #selector(didTapClose))
         }
     }
 
@@ -71,8 +74,7 @@ class LibraryPlaylistsViewController: UIViewController {
                     print(error.localizedDescription)
                 }
             }
-        }
-    }
+        }    }
 
     private func updateUI() {
         if playlists.isEmpty {
@@ -108,17 +110,18 @@ class LibraryPlaylistsViewController: UIViewController {
 
             APICaller.shared.createPlaylist(with: text) { [weak self] success in
                 if success {
-//                    HapticsManager.shared.vibrate(for: .success)
+                    HapticsManager.shared.vibrate(for: .success)
                     // Refresh list of playlists
                     self?.fetchData()
                 }
                 else {
-//                    HapticsManager.shared.vibrate(for: .error)
+                    HapticsManager.shared.vibrate(for: .error)
                     print("Failed to create playlist")
                 }
             }
-        }))
-
+        }
+                                     )
+        )
         present(alert, animated: true)
     }
 }
@@ -133,7 +136,7 @@ extension LibraryPlaylistsViewController: UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return playlists.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: SearchResultSubtitleTableViewCell.identifier,
@@ -151,23 +154,23 @@ extension LibraryPlaylistsViewController: UITableViewDelegate, UITableViewDataSo
         )
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-//        HapticsManager.shared.vibrateForSelection()
+        HapticsManager.shared.vibrateForSelection()
         let playlist = playlists[indexPath.row]
         guard selectionHandler == nil else {
             selectionHandler?(playlist)
             dismiss(animated: true, completion: nil)
             return
         }
-
+        
         let vc = PlaylistViewController(playlist: playlist)
         vc.navigationItem.largeTitleDisplayMode = .never
-//        vc.isOwner = true
+        vc.isOwner = true
         navigationController?.pushViewController(vc, animated: true)
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }

@@ -7,7 +7,6 @@
 
 import UIKit
 import SDWebImage
-
 protocol PlayerViewControllerDelegate: AnyObject {
     func didTapPlayPause()
     func didTapForward()
@@ -79,7 +78,6 @@ class PlayerViewController: UIViewController {
 }
 
 extension PlayerViewController: PlayerControlsViewDelegate {
-    
     func playerControlsViewDidTapPlayPauseButton(_ playerControlsView: PlayerControlsView) {
         delegate?.didTapPlayPause()
     }
