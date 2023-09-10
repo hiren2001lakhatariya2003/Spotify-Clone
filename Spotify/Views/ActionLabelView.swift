@@ -16,9 +16,9 @@ protocol ActionLabelViewDelegate: AnyObject{
     func actionLabelViewDidTapButton(_ actionView: ActionLabelView)
 }
 
+
+
 class ActionLabelView: UIView{
-    
-    
     
     weak var delegate : ActionLabelViewDelegate?
     

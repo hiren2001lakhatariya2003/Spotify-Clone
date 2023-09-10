@@ -34,7 +34,7 @@ final class PlaybackPresenter {
     }
 
     var playerVC: PlayerViewController?
-
+    public var isFavourite  = false
     var player: AVPlayer?
     var playerQueue: AVQueuePlayer?
 
@@ -85,6 +85,16 @@ final class PlaybackPresenter {
 }
 
 extension PlaybackPresenter: PlayerViewControllerDelegate {
+    func didTapHeart() {
+        if isFavourite == true
+        {
+            isFavourite = false
+        }
+        else {
+            isFavourite = true
+        }
+    }
+    
     
     
     func didTapPlayPause() {

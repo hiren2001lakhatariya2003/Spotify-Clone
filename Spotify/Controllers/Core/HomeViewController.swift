@@ -79,6 +79,7 @@ class HomeViewController: UIViewController {
            }
 
            let touchPoint = gesture.location(in: collectionView)
+        
            print("point: \(touchPoint)")
 
            guard let indexPath = collectionView.indexPathForItem(at: touchPoint),

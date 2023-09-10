@@ -92,7 +92,7 @@ class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let imageSize : CGFloat = height/2.3
+        let imageSize : CGFloat = height/1.8
         imageView.frame = CGRect(x: (width-imageSize)/2,
                                  y: 20,
                                  width: imageSize,
@@ -101,12 +101,12 @@ class PlaylistHeaderCollectionReusableView: UICollectionReusableView {
         namelabel.frame = CGRect(x: 10,
                                  y: imageView.bottom+10,
                                  width: width-20,
-                                 height: 50)
+                                 height: 40)
         
         descriptionlabel.frame = CGRect(x: 10,
                                         y: namelabel.bottom,
                                  width:  width-20,
-                                 height: 44)
+                                 height: 30)
         
         ownerlabel.frame = CGRect(x: logoView.right + 45,
                                   y: descriptionlabel.bottom,

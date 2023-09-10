@@ -12,6 +12,7 @@ protocol PlayerViewControllerDelegate: AnyObject {
     func didTapForward()
     func didTapBackward()
     func didSlideSlider(_ value: Float)
+    func didTapHeart()
 }
 
 class PlayerViewController: UIViewController {
@@ -22,6 +23,7 @@ class PlayerViewController: UIViewController {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        
         return imageView
     }()
 
@@ -50,6 +52,7 @@ class PlayerViewController: UIViewController {
 
     private func configure() {
         imageView.sd_setImage(with: dataSource?.imageURL, completed: nil)
+        
         controlsView.configure(
             with: PlayerControlsViewViewModel(
                 title: dataSource?.songName,
@@ -78,6 +81,10 @@ class PlayerViewController: UIViewController {
 }
 
 extension PlayerViewController: PlayerControlsViewDelegate {
+    func playerControlsViewDidTapHeartButton(_ playerControlsView: PlayerControlsView) {
+        delegate?.didTapHeart()
+    }
+    
     func playerControlsViewDidTapPlayPauseButton(_ playerControlsView: PlayerControlsView) {
         delegate?.didTapPlayPause()
     }
@@ -93,4 +100,5 @@ extension PlayerViewController: PlayerControlsViewDelegate {
     func playerControlsView(_ playerControlsView: PlayerControlsView, didSlideSlider value: Float) {
         delegate?.didSlideSlider(value)
     }
+    
 }

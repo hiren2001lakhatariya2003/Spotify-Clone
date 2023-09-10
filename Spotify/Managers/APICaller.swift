@@ -178,12 +178,16 @@ final class APICaller {
     public func addTrackToPlaylist(
         track: AudioTrack,
         playlist : Playlist,
-        completion: @escaping (Bool) -> Void){
+        completion: @escaping (Bool) -> Void
+    ) {
             createRequest(
                 with: URL(string: Constants.baseAPIURL + "/playlists/\(playlist.id)/tracks"),
                 type: .POST) { baseRequest in
                 var request = baseRequest
-                    let json = ["uris": "spotify:track:\(track.id)"]
+                    let json = [
+                        "uris":
+                            ["spotify:track:\(track.id)"]
+                    ]
                     request.httpBody = try? JSONSerialization.data(withJSONObject: json,options: .fragmentsAllowed)
                     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                     let task = URLSession.shared.dataTask(with: request) { data, _, error in

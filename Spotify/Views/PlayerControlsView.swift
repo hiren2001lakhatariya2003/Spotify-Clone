@@ -17,6 +17,7 @@ protocol PlayerControlsViewDelegate: AnyObject {
     func playerControlsViewDidTapForwardButton(_ playerControlsView: PlayerControlsView)
     func playerControlsViewDidTapBackwardsButton(_ playerControlsView: PlayerControlsView)
     func playerControlsView(_ playerControlsView: PlayerControlsView, didSlideSlider value: Float)
+    func playerControlsViewDidTapHeartButton(_ playerControlsView: PlayerControlsView)
 }
 
 struct PlayerControlsViewViewModel {
@@ -27,6 +28,7 @@ struct PlayerControlsViewViewModel {
 final class PlayerControlsView: UIView {
 
     private var isPlaying = true
+    private var isFevorite = false
 
     weak var delegate: PlayerControlsViewDelegate?
 
@@ -39,9 +41,17 @@ final class PlayerControlsView: UIView {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "This Is My Song"
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         label.font = .systemFont(ofSize: 20, weight: .semibold)
         return label
+    }()
+    
+    private let HeartButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .label
+        let image = UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30, weight: .regular))
+        button.setImage(image, for: .normal)
+        return button
     }()
 
     private let subtitleLabel: UILabel = {
@@ -72,7 +82,7 @@ final class PlayerControlsView: UIView {
     private let playPauseButton: UIButton = {
         let button = UIButton()
         button.tintColor = .label
-        let image = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34, weight: .regular))
+        let image = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 60, weight: .regular))
         button.setImage(image, for: .normal)
         return button
     }()
@@ -81,6 +91,7 @@ final class PlayerControlsView: UIView {
         super.init(frame: frame)
         backgroundColor = .clear
         addSubview(nameLabel)
+        addSubview(HeartButton)
         addSubview(subtitleLabel)
         addSubview(volumeSlider)
         volumeSlider.addTarget(self, action: #selector(didSlideSlider(_:)), for: .valueChanged)
@@ -91,7 +102,7 @@ final class PlayerControlsView: UIView {
         backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         playPauseButton.addTarget(self, action: #selector(didTapPlayPause), for: .touchUpInside)
-
+        HeartButton.addTarget(self, action: #selector(didTapHeart), for: .touchUpInside)
         clipsToBounds = true
     }
 
@@ -117,10 +128,25 @@ final class PlayerControlsView: UIView {
         delegate?.playerControlsViewDidTapPlayPauseButton(self)
 
         // Update icon
-        let pause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34, weight: .regular))
-        let play = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34, weight: .regular))
+        let pause = UIImage(systemName: "pause.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 70, weight: .regular))
+        let play = UIImage(systemName: "play.circle.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 70, weight: .regular))
 
         playPauseButton.setImage(isPlaying ? pause : play, for: .normal)
+    }
+    
+    @objc private func didTapHeart() {
+        delegate?.playerControlsViewDidTapHeartButton(self)
+
+        // Update icon
+        if HeartButton.currentImage == UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
+        {
+            HeartButton.setImage(UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30)), for: .normal)
+        }
+       else
+        {
+           HeartButton.setImage(UIImage(systemName: "heart", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30)), for: .normal)
+       }
+       
     }
 
     override func layoutSubviews() {
@@ -128,24 +154,27 @@ final class PlayerControlsView: UIView {
         nameLabel.frame = CGRect(
             x: 0,
             y: 0,
-            width: width,
+            width: width-40,
             height: 50)
+        
+        HeartButton.frame = CGRect(x: nameLabel.right, y: nameLabel.top+10, width: 30, height: 28)
+        
         subtitleLabel.frame = CGRect(
             x: 0,
-            y: nameLabel.bottom+10,
-            width: width,
-            height: 50)
+            y: nameLabel.bottom+5,
+            width: width-20,
+            height: 20)
 
         volumeSlider.frame = CGRect(
             x: 10,
-            y: subtitleLabel.bottom+20,
+            y: subtitleLabel.bottom+10,
             width: width-20,
             height: 44)
 
         let buttonSize: CGFloat = 60
-        playPauseButton.frame = CGRect(x: (width - buttonSize)/2, y: volumeSlider.bottom + 30, width: buttonSize, height: buttonSize)
-        backButton.frame = CGRect(x: playPauseButton.left-80-buttonSize, y: playPauseButton.top, width: buttonSize, height: buttonSize)
-        nextButton.frame = CGRect(x: playPauseButton.right+80, y: playPauseButton.top, width: buttonSize, height: buttonSize)
+        playPauseButton.frame = CGRect(x: (width - buttonSize - 5)/2, y: volumeSlider.bottom + 30, width: 70, height: 70)
+        backButton.frame = CGRect(x: playPauseButton.left-40-buttonSize, y: playPauseButton.top+4, width: buttonSize, height: buttonSize)
+        nextButton.frame = CGRect(x: playPauseButton.right+40, y: playPauseButton.top+4, width: buttonSize, height: buttonSize)
     }
 
     func configure(with viewModel: PlayerControlsViewViewModel) {
